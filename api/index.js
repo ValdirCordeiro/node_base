@@ -1,8 +1,15 @@
+require("dotenv").config();
+
 const express = require("express");
 const routes = require("./routes");
+const bodyParser = require('body-parser');
+const estrategiasDeAutenticacao = require("./autenticacao/estrategias-autenticacao");
 
 const app = express();
 const port = 3000;
+
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 routes(app);
 

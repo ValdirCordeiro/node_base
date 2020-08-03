@@ -11,6 +11,9 @@ module.exports = {
       nome: {
         type: Sequelize.STRING
       },
+      login: {
+        type: Sequelize.STRING
+      },
       ativo: {
         type: Sequelize.BOOLEAN
       },
