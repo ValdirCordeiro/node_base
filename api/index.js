@@ -3,7 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const routes = require("./routes");
 const bodyParser = require('body-parser');
-const estrategiasDeAutenticacao = require("./autenticacao/estrategias-autenticacao");
+require("../redis/blacklist");
 
 const app = express();
 const port = 3000;
