@@ -46,6 +46,3 @@ require("dotenv").config();
 
 //Instalar nova estrategia de autenticacao
 npm install passport-http-bearer
-
-//Instalando REDIS
-npm install redis
