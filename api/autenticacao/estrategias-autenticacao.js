@@ -4,9 +4,7 @@ const BearerStrategy = require("passport-http-bearer").Strategy;
 const jwt = require("jsonwebtoken");
 
 const bcrypt = require("bcrypt");
-
-const usuarioControler = require("../controllers/UsuarioController");
-const UsuarioController = require("../controllers/UsuarioController");
+const usuarioController = require("../controllers/UsuarioController");
 
 function verificaUsuario(usuario) {
     if (!usuario) {
@@ -29,7 +27,7 @@ passport.use(
         session: false
     }, async (login, senha, done) => {
         try {
-            const usuario = await usuarioControler.buscarUsuarioPorLogin(login);
+            const usuario = await usuarioController.buscarUsuarioPorLogin(login);
 
             verificaUsuario(usuario);
             await verificaSenha(senha, usuario.senha);
@@ -39,14 +37,14 @@ passport.use(
             done(error);
         }
     })
-)
+);
 
 passport.use(
     new BearerStrategy(
        async (token, done) => {
             try {
                 const payload = jwt.verify(token, process.env.CHAVE_JWT);
-                const usuario = await UsuarioController.buscarUsuarioPorId(payload.id);
+                const usuario = await usuarioController.buscarUsuarioPorId(payload.id);
     
                 done(null, usuario);
             } catch (error) {
@@ -54,4 +52,6 @@ passport.use(
             }
         }
     )
-)
+);
+
+module.exports = passport;

@@ -1,4 +1,4 @@
-const passport = require("passport");
+const passport = require("./estrategias-autenticacao");
 
 module.exports = {
     local: (req, res, next) => {
