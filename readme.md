@@ -62,3 +62,6 @@ require("dotenv").config();
 //Instalar nova estrategia de autenticacao
 
 npm install passport-http-bearer
+
+//adicionando cors
+npm install cors
