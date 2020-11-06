@@ -27,6 +27,8 @@ passport.use(
         session: false
     }, async (login, senha, done) => {
         try {
+            console.log("Login" + login);
+            console.log("senha" + senha);
             const usuario = await usuarioController.buscarUsuarioPorLogin(login);
 
             verificaUsuario(usuario);
@@ -41,11 +43,11 @@ passport.use(
 
 passport.use(
     new BearerStrategy(
-       async (token, done) => {
+        async (token, done) => {
             try {
                 const payload = jwt.verify(token, process.env.CHAVE_JWT);
                 const usuario = await usuarioController.buscarUsuarioPorId(payload.id);
-    
+
                 done(null, usuario);
             } catch (error) {
                 done(error);

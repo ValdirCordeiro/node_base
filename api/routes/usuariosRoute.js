@@ -8,6 +8,8 @@ router.post("/login", middlewareAutenticacao.local, UsuarioController.login);
 
 router.get("/usuarios", middlewareAutenticacao.bearer, UsuarioController.buscarTodosUsuarios);
 
+router.get("/usuarios/:nome", middlewareAutenticacao.bearer, UsuarioController.buscarUsuariosPorNome);
+
 router.get("/usuarios/:id", middlewareAutenticacao.bearer, UsuarioController.buscarUsuarioPorIdRequisicao);
 
 router.post("/usuarios", middlewareAutenticacao.bearer, UsuarioController.criarUsuario);

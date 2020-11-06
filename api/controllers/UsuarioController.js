@@ -1,6 +1,7 @@
 const dataBase = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const Sequelize = require("sequelize");
 
 class UsuarioController {
     static async buscarTodosUsuarios(req, res) {
@@ -69,6 +70,20 @@ class UsuarioController {
         }
     }
 
+    static async buscarUsuariosPorNome(req, res) {
+        const { nome } = req.params;
+        try {
+            console.log("Entrou na pesquisa com nome: " + nome);
+            var query = `%${nome}%`;
+            const usuario = await dataBase.Usuarios
+                .findAll({ where: { nome: { [Sequelize.Op.like]: query } } });
+            return res.status(200).json(usuario);
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json(error.message);
+        }
+    }
+
     static async buscarUsuarioPorLogin(login) {
         try {
             const usuario = await dataBase.Usuarios.findOne({ where: { login: login } });
@@ -80,13 +95,23 @@ class UsuarioController {
     }
 
     static async login(req, res) {
-        console.log("entrou aqui");
         const token = await criaTokenJWT(req.user);
         res.set("Authorization", token);
 
-        res.status(204).send();
-    }   
+        let usuario = req.user;
 
+        usuario = {
+            id: usuario.id,
+            login: usuario.login,
+            nome: usuario.nome,
+            ativo: usuario.ativo,
+            email: usuario.email,
+            permissao: usuario.permissao,
+            token: token
+        };
+
+        res.status(200).send(usuario);
+    }
 }
 
 async function criarSenhaHash(senha) {
@@ -98,8 +123,9 @@ async function criaTokenJWT(usuario) {
     const payload = {
         id: usuario.id,
     };
+    console.log("JWT: " + process.env.CHAVE_JWT);
 
-    const token = jwt.sign(payload, process.env.CHAVE_JWT, { expiresIn: '10m' });
+    const token = jwt.sign(payload, process.env.CHAVE_JWT, { expiresIn: '12h' });
     return token;
 }
 
